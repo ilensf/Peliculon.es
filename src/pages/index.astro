@@ -1,0 +1,311 @@
+---
+
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peliculon.es — ¿Qué ver?</title>
+    <style>
+      :root {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial;
+      }
+      body {
+        min-height: 100vh;
+        background: #0f172a;
+        color: #e6eef8;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 24px;
+      }
+      .card {
+        width: min(1000px, 96vw);
+        background: #0b1220;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .row {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+      }
+      .poster {
+        max-width: 100%;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #081226;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #cbd5e1;
+        min-height: 520px;
+        overflow: hidden;
+      }
+      .site-header {
+        text-align: center;
+        margin-bottom: 8px;
+        width: min(1000px, 96vw);
+      }
+      .site-title {
+        margin: 0;
+        font-size: 3rem;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        background: linear-gradient(90deg, #c5d2e9, #9bf6e4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 6px 18px rgba(8, 18, 38, 0.6);
+      }
+      .site-subtitle {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        background: linear-gradient(90deg, #c5d2e9, #9bf6e4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 6px 18px rgba(8, 18, 38, 0.6);
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 10px;
+        object-fit: cover;
+        background: #081226;
+      }
+      .meta {
+        flex: 1;
+        min-width: 0;
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+      }
+      h1 {
+        margin: 0 0 8px 0;
+        font-size: 1.6rem;
+        line-height: 1.1;
+      }
+      #sub {
+        color: #9fb4ff;
+        margin-bottom: 8px;
+      }
+      #overview {
+        max-height: 320px;
+        overflow: auto;
+        white-space: normal;
+        color: #cbd5e1;
+        line-height: 1.5;
+        margin-bottom: 12px;
+      }
+      /* Center buttons and lower them */
+      .controls {
+        display: flex;
+        gap: 5rem;
+        margin-top: 50%;
+        justify-content: center;
+        width: 100%;
+      }
+      button {
+        background: #0e95e2;
+        border: none;
+        padding: 10px 14px;
+        border-radius: 10px;
+        color: #dddddd;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #334155;
+        color: #e6eef8;
+      }
+      /* Emphasize the "Otra" button (id=anotherBtn) */
+      #anotherBtn {
+        padding: 12px 20px;
+        font-size: 1.05rem;
+        background: linear-gradient(90deg, #06b6d4, #06d6a0);
+        color: #042f2e;
+        box-shadow: 0 8px 28px rgba(6, 182, 167, 0.18);
+        border-radius: 10px;
+        transition:
+          transform 0.12s ease,
+          filter 0.12s ease,
+          box-shadow 0.12s ease;
+      }
+      #anotherBtn:hover {
+        transform: translateY(-3px);
+        filter: brightness(1.03);
+        box-shadow: 0 12px 34px rgba(6, 182, 167, 0.22);
+      }
+      #anotherBtn:focus {
+        outline: 3px solid rgba(99, 102, 241, 0.18);
+        outline-offset: 2px;
+      }
+      button.secondary {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .small {
+        font-size: 0.95rem;
+        color: #93c5fd;
+      }
+
+      @media (max-width: 1100px) {
+        .row {
+          flex-wrap: wrap;
+        }
+        .poster {
+          order: 1;
+          width: 100%;
+          min-height: 300px;
+        }
+        .meta {
+          order: 2;
+          width: 100%;
+        }
+        .controls {
+          margin-top: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <h1 class="site-title">Peliculon.es</h1>
+      <h2 class="site-subtitle">¿No sabes que pelicula ver?</h2>
+    </header>
+    <main class="card">
+      <div class="row">
+        <div class="poster" id="poster">Cargando...</div>
+        <div class="meta">
+          <h1 id="title">Cargando...</h1>
+          <div class="small" id="sub">—</div>
+          <div id="overview">
+            Haz clic en <strong>Otra</strong> para obtener una sugerencia de película.
+          </div>
+
+          <div class="controls">
+            <button id="prevBtn" class="secondary" disabled>Anterior</button>
+            <button id="anotherBtn">Otra película</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      const posterEl = document.getElementById("poster");
+      const titleEl = document.getElementById("title");
+      const overviewEl = document.getElementById("overview");
+      const subEl = document.getElementById("sub");
+      const prevBtn = document.getElementById("prevBtn");
+      const anotherBtn = document.getElementById("anotherBtn");
+
+      let history = [];
+      let index = -1;
+
+      function render(movie) {
+        if (!movie) return;
+        titleEl.textContent = movie.title || "Sin título";
+        overviewEl.textContent = movie.overview || "Descripción no disponible.";
+        const formattedDate = movie.release_date
+          ? formatDate(movie.release_date)
+          : "";
+        subEl.textContent = [
+          formattedDate,
+          movie.vote_average ? `⭐ ${movie.vote_average}` : "",
+        ]
+          .filter(Boolean)
+          .join(" • ");
+        if (movie.poster_path) {
+          posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}">`;
+        } else {
+          posterEl.textContent = "Sin póster";
+        }
+        prevBtn.disabled = index <= 0;
+      }
+
+      function formatDate(d) {
+        if (!d) return "";
+        // If format is YYYY-MM-DD, just reorder
+        const isoMatch = /^\s*(\d{4})-(\d{2})-(\d{2})\s*$/.exec(d);
+        if (isoMatch) {
+          const [, y, m, day] = isoMatch;
+          return `${day}/${m}/${y}`;
+        }
+        const dt = new Date(d);
+        if (isNaN(dt)) return d;
+        const dd = String(dt.getDate()).padStart(2, "0");
+        const mm = String(dt.getMonth() + 1).padStart(2, "0");
+        const yyyy = dt.getFullYear();
+        return `${dd}/${mm}/${yyyy}`;
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c]
+        );
+      }
+
+      async function fetchRandom() {
+        anotherBtn.disabled = true;
+        anotherBtn.textContent = "Cargando...";
+        try {
+          const res = await fetch("/api/random");
+          if (!res.ok) throw new Error("Solicitud fallida");
+          const movie = await res.json();
+          if (movie.error) throw new Error(movie.error);
+          if (index < history.length - 1) history = history.slice(0, index + 1);
+          history.push(movie);
+          index = history.length - 1;
+          render(movie);
+        } catch (err) {
+          titleEl.textContent = "Error";
+          overviewEl.textContent =
+            err.message || "Error al obtener la película.";
+          posterEl.textContent = "—";
+        } finally {
+          anotherBtn.disabled = false;
+          anotherBtn.textContent = "Otra película";
+        }
+      }
+
+      prevBtn.addEventListener("click", () => {
+        if (index > 0) {
+          index -= 1;
+          render(history[index]);
+        }
+      });
+      anotherBtn.addEventListener("click", fetchRandom);
+      fetchRandom();
+    </script>
+  </body>
+</html>

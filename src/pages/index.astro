@@ -8,6 +8,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Peliculon.es — ¿Qué ver?</title>
+    <meta
+      name="description"
+      content="Peliculon.es sugiere películas. Pulsa 'Otra película' para obtener una recomendación aleatoria con sinopsis y reseñas."
+    />
+    <meta property="og:site_name" content="Peliculon.es" />
+    <meta property="og:title" content="Peliculon.es — ¿Qué ver?" />
+    <meta
+      property="og:description"
+      content="¿No sabes qué ver? Obtén una recomendación aleatoria de películas con sinopsis y reseñas."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/og-default.png" />
+    <link rel="canonical" href="https://peliculon.es/" />
     <style>
       :root {
         font-family:
@@ -98,7 +111,7 @@
         display: flex;
         flex-direction: column;
       }
-      h1 {
+      #title {
         margin: 0 0 8px 0;
         font-size: 1.6rem;
         line-height: 1.1;
@@ -115,7 +128,26 @@
         line-height: 1.5;
         margin-bottom: 12px;
       }
-      /* Center buttons and lower them */
+      .review {
+        margin-top: 8px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.02);
+        border-left: 3px solid rgba(99, 102, 241, 0.12);
+        border-radius: 6px;
+        color: #dbeafe;
+        font-style: normal;
+      }
+      .review .review-author {
+        margin-top: 8px;
+        color: #93c5fd;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      .review .review-content {
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        line-height: 1.4;
+      }
       .controls {
         display: flex;
         gap: 5rem;
@@ -136,7 +168,7 @@
         background: #334155;
         color: #e6eef8;
       }
-      /* Emphasize the "Otra" button (id=anotherBtn) */
+
       #anotherBtn {
         padding: 12px 20px;
         font-size: 1.05rem;
@@ -170,6 +202,21 @@
         font-size: 0.95rem;
         color: #93c5fd;
       }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .review + #showEngBtn:not([hidden]) {
+        margin-top: 16px;
+        display: inline-block;
+      }
 
       @media (max-width: 1100px) {
         .row {
@@ -189,21 +236,44 @@
         }
       }
     </style>
+    <meta name="google-adsense-account" content="ca-pub-5799986250497785" />
   </head>
   <body>
     <header class="site-header">
+      <a class="skip-link sr-only" href="#main">Saltar al contenido</a>
+
       <h1 class="site-title">Peliculon.es</h1>
-      <h2 class="site-subtitle">¿No sabes que pelicula ver?</h2>
+      <h2 class="site-subtitle">¿No sabes qué película ver?</h2>
     </header>
-    <main class="card">
+    <main id="main" class="card">
       <div class="row">
         <div class="poster" id="poster">Cargando...</div>
         <div class="meta">
-          <h1 id="title">Cargando...</h1>
+          <h2 id="title">Cargando...</h2>
           <div class="small" id="sub">—</div>
           <div id="overview">
-            Haz clic en <strong>Otra</strong> para obtener una sugerencia de película.
+            Haz clic en <strong>Otra pelicula</strong> para obtener una sugerencia
+            de película.
           </div>
+          <button
+            id="showReviewBtn"
+            class="secondary"
+            hidden
+            aria-controls="review"
+            aria-expanded="false">Mostrar reseña</button
+          >
+
+          <div id="review" class="review" hidden></div>
+          <button
+            id="showEngBtn"
+            class="secondary"
+            hidden
+            aria-controls="engReviews"
+            aria-expanded="false">Ver reseñas en Inglés</button
+          >
+
+          <div id="engReviews" class="review" hidden></div>
+          <div id="status" class="sr-only" aria-live="polite"></div>
 
           <div class="controls">
             <button id="prevBtn" class="secondary" disabled>Anterior</button>
@@ -217,37 +287,149 @@
       const posterEl = document.getElementById("poster");
       const titleEl = document.getElementById("title");
       const overviewEl = document.getElementById("overview");
+      const reviewEl = document.getElementById("review");
+      const showReviewBtn = document.getElementById("showReviewBtn");
+      const showEngBtn = document.getElementById("showEngBtn");
+      const engReviews = document.getElementById("engReviews");
       const subEl = document.getElementById("sub");
       const prevBtn = document.getElementById("prevBtn");
       const anotherBtn = document.getElementById("anotherBtn");
+      const statusEl = document.getElementById("status");
 
       let history = [];
       let index = -1;
 
-      function render(movie) {
-        if (!movie) return;
-        titleEl.textContent = movie.title || "Sin título";
-        overviewEl.textContent = movie.overview || "Descripción no disponible.";
-        const formattedDate = movie.release_date
-          ? formatDate(movie.release_date)
-          : "";
-        subEl.textContent = [
-          formattedDate,
-          movie.vote_average ? `⭐ ${movie.vote_average}` : "",
-        ]
-          .filter(Boolean)
-          .join(" • ");
-        if (movie.poster_path) {
-          posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}">`;
-        } else {
-          posterEl.textContent = "Sin póster";
+      function updateMeta(movie) {
+        try {
+          document.title = "Peliculon.es — ¿Qué ver?";
+
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc)
+            metaDesc.setAttribute(
+              "content",
+              (movie && movie.overview) ||
+                "Peliculon.es — recomendación de películas"
+            );
+
+          const ogTitle = document.querySelector('meta[property="og:title"]');
+          if (ogTitle)
+            ogTitle.setAttribute("content", "Peliculon.es — ¿Qué ver?");
+
+          const ogDesc = document.querySelector(
+            'meta[property="og:description"]'
+          );
+          if (ogDesc)
+            ogDesc.setAttribute(
+              "content",
+              (movie && movie.overview) ||
+                "Peliculon.es — recomendación de películas"
+            );
+
+          const ogImage = document.querySelector('meta[property="og:image"]');
+          if (ogImage && movie && movie.poster_path)
+            ogImage.setAttribute("content", movie.poster_path);
+
+          const twTitle = document.querySelector('meta[name="twitter:title"]');
+          if (twTitle)
+            twTitle.setAttribute("content", "Peliculon.es — ¿Qué ver?");
+          const twDesc = document.querySelector(
+            'meta[name="twitter:description"]'
+          );
+          if (twDesc)
+            twDesc.setAttribute(
+              "content",
+              (movie && movie.overview) ||
+                "Peliculon.es — recomendación de películas"
+            );
+          const twImage = document.querySelector('meta[name="twitter:image"]');
+          if (twImage && movie && movie.poster_path)
+            twImage.setAttribute("content", movie.poster_path);
+
+          const ogUrl = document.querySelector('meta[property="og:url"]');
+          if (ogUrl) ogUrl.setAttribute("content", window.location.href);
+
+          if (typeof updateLD === "function") updateLD(movie);
+        } catch (e) {
+          console.warn("updateMeta failed", e);
         }
-        prevBtn.disabled = index <= 0;
+      }
+
+      function render(movie) {
+        try {
+          if (!movie) return;
+          console.debug("[render] movie:", movie);
+          updateMeta(movie);
+          const formattedDate = movie.release_date
+            ? formatDate(movie.release_date)
+            : "";
+          const titleText =
+            movie.title || movie.name || movie.original_title || "Sin título";
+          const overviewText =
+            movie.overview || movie.synopsis || "Descripción no disponible.";
+
+          if (titleEl) titleEl.textContent = titleText;
+          if (overviewEl) overviewEl.textContent = overviewText;
+
+          subEl.innerHTML = [
+            formattedDate
+              ? `<time datetime="${movie.release_date}">${formattedDate}</time>`
+              : null,
+            movie.vote_average ? `⭐ ${movie.vote_average}` : null,
+          ]
+            .filter(Boolean)
+            .join(" • ");
+          if (movie.poster_path) {
+            posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}">`;
+          } else {
+            posterEl.textContent = "Sin póster";
+          }
+          if (movie.review_content) {
+            showReviewBtn.hidden = false;
+            showEngBtn.hidden = true;
+            engReviews.hidden = true;
+            engReviews.innerHTML = "";
+            reviewEl.hidden = true;
+            const author = movie.review_author
+              ? `— ${escapeHtml(movie.review_author)}`
+              : "";
+            reviewEl.innerHTML = `<div class="review-content">${escapeHtml(movie.review_content)}</div>${author ? `<div class="review-author">${author}</div>` : ""}`;
+            if (statusEl)
+              statusEl.textContent = `Sugerencia: ${movie.title || "película"}`;
+            try {
+              titleEl.setAttribute("tabindex", "-1");
+              titleEl.focus({ preventScroll: true });
+            } catch (e) {}
+          } else {
+            showReviewBtn.hidden = true;
+            reviewEl.hidden = false;
+            reviewEl.innerHTML = `<div class="small">No se encontraron reseñas en Español</div>`;
+            if (movie.english_reviews && movie.english_reviews.length) {
+              showEngBtn.hidden = false;
+              engReviews.hidden = true;
+              engReviews.innerHTML = movie.english_reviews
+                .map(
+                  (r) =>
+                    `<div class="review-content">${escapeHtml(r.content || "")}</div>${r.author ? `<div class="review-author">— ${escapeHtml(r.author)}</div>` : ""}`
+                )
+                .join(
+                  '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:8px 0">'
+                );
+              if (statusEl)
+                statusEl.textContent = `No se encontraron reseñas en Español. ${movie.english_reviews.length} reseña(s) en Inglés disponible(s).`;
+            } else {
+              showEngBtn.hidden = true;
+              engReviews.hidden = true;
+              engReviews.innerHTML = "";
+            }
+          }
+          prevBtn.disabled = index <= 0;
+        } catch (e) {
+          console.warn("[render] failed", e);
+        }
       }
 
       function formatDate(d) {
         if (!d) return "";
-        // If format is YYYY-MM-DD, just reorder
         const isoMatch = /^\s*(\d{4})-(\d{2})-(\d{2})\s*$/.exec(d);
         if (isoMatch) {
           const [, y, m, day] = isoMatch;
@@ -278,6 +460,7 @@
       async function fetchRandom() {
         anotherBtn.disabled = true;
         anotherBtn.textContent = "Cargando...";
+        if (statusEl) statusEl.textContent = "Cargando sugerencia...";
         try {
           const res = await fetch("/api/random");
           if (!res.ok) throw new Error("Solicitud fallida");
@@ -297,7 +480,6 @@
           anotherBtn.textContent = "Otra película";
         }
       }
-
       prevBtn.addEventListener("click", () => {
         if (index > 0) {
           index -= 1;
@@ -305,6 +487,31 @@
         }
       });
       anotherBtn.addEventListener("click", fetchRandom);
+      showReviewBtn.addEventListener("click", () => {
+        const expanded = showReviewBtn.getAttribute("aria-expanded") === "true";
+        if (reviewEl.hidden) {
+          reviewEl.hidden = false;
+          showReviewBtn.textContent = "Ocultar reseña";
+          showReviewBtn.setAttribute("aria-expanded", "true");
+        } else {
+          reviewEl.hidden = true;
+          showReviewBtn.textContent = "Mostrar reseña";
+          showReviewBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+      showEngBtn.addEventListener("click", () => {
+        const expanded = showEngBtn.getAttribute("aria-expanded") === "true";
+        if (engReviews.hidden) {
+          engReviews.hidden = false;
+          showEngBtn.textContent = "Ocultar reseñas en Inglés";
+          showEngBtn.setAttribute("aria-expanded", "true");
+        } else {
+          engReviews.hidden = true;
+          showEngBtn.textContent = "Ver reseñas en Inglés";
+          showEngBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+
       fetchRandom();
     </script>
   </body>

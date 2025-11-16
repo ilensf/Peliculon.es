@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 
 const TMDB_BASE = 'https://api.themoviedb.org/3';
 const IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+// Translation removed: reviews are returned in original language or preferred Spanish when available.
 
 async function fetchJson(url: string) {
   const res = await fetch(url);
@@ -17,6 +18,29 @@ async function fetchJson(url: string) {
 }
 
 export const GET: APIRoute = async () => {
+  try {
+    if (!process.env.TMDB_API_KEY) {
+      const fs = await import('fs/promises');
+      try {
+        const envPath = process.cwd() + '/.env';
+        const text = await fs.readFile(envPath, 'utf8');
+        for (const rawLine of text.split(/\r?\n/)) {
+          const line = rawLine.trim();
+          if (!line || line.startsWith('#')) continue;
+          const idx = line.indexOf('=');
+          if (idx === -1) continue;
+          const k = line.slice(0, idx).trim();
+          let v = line.slice(idx + 1).trim();
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1);
+          }
+          if (!process.env[k]) process.env[k] = v;
+        }
+        console.info('[api/random] Loaded .env from disk');
+      } catch (err) {}
+    }
+  } catch (e) {}
+
   const key = process.env.TMDB_API_KEY;
   console.info('[api/random] TMDB_API_KEY present?', !!key);
   if (!key) {
@@ -71,6 +95,34 @@ export const GET: APIRoute = async () => {
       console.info('[api/random] No localized Spanish details for movie id', movie.id);
     }
 
+    let review_author: string | null = null;
+    let review_content: string | null = null;
+    let english_reviews: Array<{ author: string | null; content: string | null }> = [];
+    try {
+      // Prefer reviews that TMDB returns localized in Spanish
+      const reviewsEsUrl = `${TMDB_BASE}/movie/${movie.id}/reviews?api_key=${key}&language=es-ES&page=1`;
+      console.info('[api/random] Movie reviews URL (es):', reviewsEsUrl);
+      const reviewsEs = await fetchJson(reviewsEsUrl);
+      const listEs = (reviewsEs && reviewsEs.results) ? reviewsEs.results : [];
+      if (listEs.length) {
+        const chosen = listEs[0];
+        review_author = chosen.author || null;
+        review_content = chosen.content || null;
+        if (review_content && review_content.length > 800) review_content = review_content.slice(0, 800) + '…';
+      } else {
+        // No Spanish reviews available — collect up to 2 English reviews as fallback for UI
+        const reviewsEnUrl = `${TMDB_BASE}/movie/${movie.id}/reviews?api_key=${key}&language=en-US&page=1`;
+        console.info('[api/random] Movie reviews URL (en):', reviewsEnUrl);
+        const reviewsEn = await fetchJson(reviewsEnUrl);
+        const listEn = (reviewsEn && reviewsEn.results) ? reviewsEn.results : [];
+        if (listEn.length) {
+          english_reviews = listEn.slice(0, 2).map((r: any) => ({ author: r.author || null, content: r.content ? (r.content.length > 800 ? r.content.slice(0, 800) + '…' : r.content) : null }));
+        }
+      }
+    } catch (e) {
+      console.info('[api/random] Could not fetch reviews for movie id', movie.id);
+    }
+
     const voteAvg = typeof movie.vote_average === 'number' ? Number(movie.vote_average.toFixed(2)) : movie.vote_average;
 
     const out = {
@@ -80,6 +132,9 @@ export const GET: APIRoute = async () => {
       poster_path: movie.poster_path ? `${IMAGE_BASE}${movie.poster_path}` : null,
       release_date: movie.release_date || movie.first_air_date || null,
       vote_average: voteAvg,
+      review_author,
+      review_content,
+      english_reviews,
     };
 
     return new Response(JSON.stringify(out), { headers: { 'Content-Type': 'application/json' } });

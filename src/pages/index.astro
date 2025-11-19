@@ -339,6 +339,40 @@
         object-fit: cover !important;
         display: block;
       }
+
+      .promo-text {
+        text-align: center;
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #93c5fd;
+      }
+
+      .synopsis-intro {
+        font-size: 0.95rem;
+        color: #93c5fd;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        border-top: 1px solid #334155;
+      }
+
+      footer a {
+        color: #93c5fd;
+        text-decoration: none;
+        margin: 0 15px;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
     </style>
     <meta name="google-adsense-account" content="ca-pub-5799986250497785" />
   </head>
@@ -349,12 +383,18 @@
       <h1 class="site-title">Peliculon.es</h1>
       <h2 class="site-subtitle">¿No sabes qué película ver?</h2>
     </header>
+
+    <div class="promo-text">
+      Olvídate de listas interminables. Te damos el peliculón de la noche y su sinopsis en un solo clic. Nuestra misión es simple: menos buscar, más ver.
+    </div>
+
     <main id="main" class="card">
       <div class="row">
         <div class="poster" id="poster">Cargando...</div>
         <div class="meta">
           <h2 id="title">Cargando...</h2>
           <div class="small" id="sub">—</div>
+          <div class="synopsis-intro" id="synopsisIntro" hidden>Aquí te dejamos la sinopsis de este peliculón:</div>
           <div id="overview">
             Haz clic en <strong>Otra pelicula</strong> para obtener una sugerencia
             de película.
@@ -390,10 +430,17 @@
       </div>
     </main>
 
+    <footer>
+      <a href="/privacidad">Política de Privacidad</a>
+      <a href="/contacto">Contacto</a>
+      <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.7;">Datos proporcionados por TMDB</div>
+    </footer>
+
     <script type="module">
       const posterEl = document.getElementById("poster");
       const titleEl = document.getElementById("title");
       const overviewEl = document.getElementById("overview");
+      const synopsisIntroEl = document.getElementById("synopsisIntro");
       const reviewEl = document.getElementById("review");
       const showReviewBtn = document.getElementById("showReviewBtn");
       const showEngBtn = document.getElementById("showEngBtn");
@@ -477,6 +524,7 @@
 
           if (titleEl) titleEl.textContent = titleText;
           if (overviewEl) overviewEl.textContent = overviewText;
+          if (synopsisIntroEl && movie.overview) synopsisIntroEl.hidden = false;
 
           subEl.innerHTML = [
             formattedDate

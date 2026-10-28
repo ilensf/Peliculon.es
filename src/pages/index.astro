@@ -243,35 +243,58 @@
         margin-bottom: 12px;
       }
 
-      /* Proveedores forzados en fila (row) */
-      .providers-list {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
+      /* Proveedores */
+      #watchProviders {
+        margin: 24px 0;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
       }
 
-      .provider-logo-wrap {
-        width: 36px !important;
-        height: 36px !important;
-        flex: 0 0 36px !important;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: transform 0.2s ease;
-        display: block;
+      .providers-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
       }
 
-      .provider-logo-wrap img {
+      /* Forzamos la fila horizontal de forma estricta */
+      #watchProviders .providers-list {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+      }
+
+      /* Blindamos el tamaño de la caja del logo */
+      #watchProviders .provider-logo-wrap {
+        width: 42px !important;
+        height: 42px !important;
+        flex: 0 0 42px !important; /* Evita que crezca o encoja */
+        border-radius: 10px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important; /* Fondo blanco útil para logos con transparencia */
+        display: block !important;
+      }
+
+      /* Blindamos el comportamiento de la imagen dentro de la caja */
+      #watchProviders .provider-logo-wrap img {
         width: 100% !important;
         height: 100% !important;
-        object-fit: cover !important;
-        display: block;
-      }
-
-      .provider-logo-wrap:hover {
-        transform: translateY(-2px);
+        object-fit: contain !important; /* Contain evita que logos rectangulares como el de Prime se recorten */
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
       }
 
       .controls {

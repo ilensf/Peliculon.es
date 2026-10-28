@@ -109,27 +109,27 @@
         align-items: flex-start; 
       }
 
+      /* Póster con límites de tamaño y sin recortes */
       .poster {
-        width: 320px;
+        width: 100%;
+        max-width: 300px; /* Límite máximo de ancho */
         flex-shrink: 0;
-        aspect-ratio: 2 / 3;
-        border-radius: 12px;
-        background: rgba(0, 0, 0, 0.3);
+        background: transparent;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         color: var(--text-muted);
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         position: relative;
       }
 
-      /* Este estilo global de img era el que rompía los logos. Lo limitamos solo al póster */
       .poster img {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        height: auto;
+        max-height: 450px; /* Límite máximo de alto para no ocupar toda la pantalla */
+        object-fit: contain; /* Garantiza que la imagen nunca se recorte */
         display: block;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         transition: transform 0.3s ease;
       }
 
@@ -230,7 +230,6 @@
         text-align: right;
       }
 
-      /* Base simple para el contenedor de proveedores */
       #watchProviders {
         margin: 24px 0;
         padding-top: 20px;
@@ -344,8 +343,11 @@
         }
         
         .poster {
-          width: 100%;
-          max-width: 320px;
+          max-width: 280px;
+        }
+
+        .poster img {
+          max-height: 400px;
         }
 
         #title {
@@ -608,8 +610,6 @@
             }
           }
 
-          // AQUI ESTÁ LA SOLUCIÓN DEFINITIVA PARA LOS LOGOS: 
-          // Estilos inline forzando Flexbox horizontal (row) y tamaño estricto (42px)
           if (watchProvidersEl) {
             if (movie.watch_providers && movie.watch_providers.length > 0) {
               watchProvidersEl.innerHTML = `

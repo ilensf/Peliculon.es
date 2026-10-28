@@ -23,7 +23,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
 
-    <style>
+    <!-- is:global obliga a Astro a aplicar los estilos también al HTML inyectado por JS -->
+    <style is:global>
       :root {
         --bg-color: #0b0510;
         --card-bg: rgba(23, 15, 42, 0.6);
@@ -103,52 +104,45 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      /* BLINDAJE CONTRA SOLAPAMIENTO */
+      /* DISEÑO EN DOS COLUMNAS CON SEPARACIÓN AMPLIA */
       .row {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 50px !important; /* Gran separación para empujar el texto a la derecha */
-        align-items: flex-start !important; 
-        width: 100% !important;
+        display: grid;
+        grid-template-columns: 380px minmax(0, 1fr);
+        gap: 56px; /* Empuja todo el bloque derecho lejos de la imagen */
+        align-items: start;
+        width: 100%;
       }
 
-      /* EL CONTENEDOR ES INAMOVIBLE */
+      /* CONTENEDOR DE LA IMAGEN CON RECORTE DE SEGURIDAD */
       .poster {
-        width: 350px !important;
-        min-width: 350px !important;
-        max-width: 350px !important;
-        flex: 0 0 350px !important; /* Obliga a mantener exactamente este ancho */
-        margin: 0 !important;
-        padding: 0 !important;
-        background: transparent !important;
-        border: none !important;
-        display: block !important;
+        width: 380px;
+        max-width: 100%;
+        border-radius: 16px;
+        overflow: hidden; /* Garantiza que nada salga de los 380px ni pierda el borde curvo */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.65);
+        background: rgba(0, 0, 0, 0.25);
+        display: block;
       }
 
-      /* LA IMAGEN JAMÁS SUPERARÁ LOS 350px */
       .poster img {
-        width: 350px !important;
-        max-width: 350px !important;
-        height: auto !important; /* Altura natural completa sin recortes */
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
         display: block !important;
-        border-radius: 16px !important; /* Bordes redondos de la imagen */
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
-        transition: transform 0.3s ease !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        border-radius: 16px !important;
+        transition: transform 0.3s ease;
       }
 
       .card:hover .poster img {
-        transform: scale(1.02) !important;
+        transform: scale(1.02);
       }
 
-      /* EL TEXTO SE QUEDA A LA DERECHA Y SE ADAPTA AL RESTO */
+      /* COLUMNA DERECHA (TEXTOS, ICONOS Y BOTONES) */
       .meta {
-        flex: 1 !important;
-        min-width: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-width: 0;
       }
 
       #title {
@@ -193,7 +187,7 @@
       }
 
       #overview {
-        max-height: 400px;
+        max-height: 380px;
         overflow-y: auto;
         color: #e2e8f0;
         line-height: 1.7;
@@ -257,7 +251,7 @@
         display: flex;
         gap: 16px;
         margin-top: auto;
-        padding-top: 20px;
+        padding-top: 24px;
       }
 
       button {
@@ -342,24 +336,16 @@
         text-decoration: underline;
       }
 
-      @media (max-width: 900px) {
+      @media (max-width: 950px) {
         .row {
-          flex-direction: column !important;
-          align-items: center !important;
-          gap: 32px !important;
+          grid-template-columns: 1fr;
+          gap: 32px;
         }
         
         .poster {
-          width: 300px !important;
-          min-width: 300px !important;
-          max-width: 300px !important;
-          flex: 0 0 300px !important;
-          margin: 0 auto !important;
-        }
-
-        .poster img {
-          width: 300px !important;
-          max-width: 300px !important;
+          width: 100%;
+          max-width: 340px;
+          margin: 0 auto;
         }
 
         #title {
@@ -387,6 +373,10 @@
 
         .card {
           padding: 24px;
+        }
+
+        .poster {
+          max-width: 100%;
         }
 
         .controls {
@@ -574,10 +564,11 @@
               : null,
           ].filter(Boolean).join("");
 
+          // ESTILOS INLINE EN EL PÓSTER: Garantiza border-radius y que jamás supere el ancho de su columna
           if (movie.poster_path) {
-            posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}">`;
+            posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}" style="width: 100% !important; max-width: 100% !important; height: auto !important; display: block !important; border-radius: 16px !important; object-fit: contain !important;">`;
           } else {
-            posterEl.innerHTML = "<span style='color: #475569;'>Sin póster</span>";
+            posterEl.innerHTML = "<span style='color: #475569; padding: 40px; display: block; text-align: center;'>Sin póster</span>";
           }
 
           if (movie.review_content) {
@@ -697,7 +688,7 @@
           titleEl.textContent = "¡Ups! Ha ocurrido un error";
           overviewEl.textContent =
             err.message || "Error al obtener la película. Inténtalo de nuevo.";
-          posterEl.innerHTML = "<span style='color: #475569;'>Sin póster</span>";
+          posterEl.innerHTML = "<span style='color: #475569; padding: 40px; display: block; text-align: center;'>Sin póster</span>";
         } finally {
           anotherBtn.disabled = false;
           anotherBtn.innerHTML = "🎬 Otra película";

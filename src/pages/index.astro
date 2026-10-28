@@ -106,27 +106,26 @@
       .row {
         display: flex;
         gap: 32px;
+        /* align-items: flex-start evita que los elementos se estiren verticalmente */
         align-items: flex-start; 
       }
 
-      /* LA SOLUCIÓN DEL PÓSTER: Altura automática y sin recortes */
+      /* LA SOLUCIÓN DEFINITIVA DEL PÓSTER */
       .poster {
-        width: 100%;
-        max-width: 300px; /* Límite de ancho */
-        flex: 0 0 auto; /* Permite que tome el espacio que necesite sin forzarse */
+        width: 280px; /* Ancho fijo para mantener la proporción visual */
+        flex: 0 0 280px; /* Bloquea el elemento para que no crezca ni se encoja */
         border-radius: 12px;
-        overflow: hidden;
-        background: rgba(0, 0, 0, 0.2);
+        overflow: hidden; /* Corta cualquier sobrante de la imagen */
+        background: rgba(0, 0, 0, 0.4);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-muted);
+        position: relative;
       }
 
       .poster img {
         width: 100%;
-        height: auto; /* La altura se calcula automáticamente según las proporciones reales de la imagen */
+        height: 100%; /* Ocupa el 100% del contenedor */
+        aspect-ratio: 2 / 3; /* Fuerza la proporción cinematográfica estándar */
+        object-fit: cover; /* Rellena la caja perfectamente sin dejar huecos */
         display: block;
         transition: transform 0.3s ease;
       }
@@ -341,7 +340,8 @@
         }
         
         .poster {
-          max-width: 250px; /* Un poco más pequeño en móviles/tablets */
+          width: 240px; /* Tamaño optimizado para móviles/tablets */
+          flex: 0 0 240px;
         }
 
         #title {

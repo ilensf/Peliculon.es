@@ -124,6 +124,7 @@
         position: relative;
       }
 
+      /* Este estilo global de img era el que rompía los logos. Lo limitamos solo al póster */
       .poster img {
         width: 100%;
         height: 100%;
@@ -170,6 +171,7 @@
         gap: 6px;
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
+      
       .badge.star {
         background: rgba(234, 179, 8, 0.15);
         color: #fde047;
@@ -228,22 +230,7 @@
         text-align: right;
       }
 
-      #watchProviders {
-        margin: 24px 0;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .providers-title {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 12px;
-      }
-
-      /* Proveedores */
+      /* Base simple para el contenedor de proveedores */
       #watchProviders {
         margin: 24px 0;
         padding-top: 20px;
@@ -254,47 +241,10 @@
       .providers-title {
         font-size: 0.85rem;
         font-weight: 600;
-        color: var(--text-muted);
+        color: #cbd5e1;
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-bottom: 12px;
-      }
-
-      /* Forzamos la fila horizontal de forma estricta */
-      #watchProviders .providers-list {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: wrap !important;
-        gap: 12px !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-      }
-
-      /* Blindamos el tamaño de la caja del logo */
-      #watchProviders .provider-logo-wrap {
-        width: 42px !important;
-        height: 42px !important;
-        flex: 0 0 42px !important; /* Evita que crezca o encoja */
-        border-radius: 10px !important;
-        overflow: hidden !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4) !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #ffffff !important; /* Fondo blanco útil para logos con transparencia */
-        display: block !important;
-      }
-
-      /* Blindamos el comportamiento de la imagen dentro de la caja */
-      #watchProviders .provider-logo-wrap img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain !important; /* Contain evita que logos rectangulares como el de Prime se recorten */
-        display: block !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        border-radius: 0 !important;
       }
 
       .controls {
@@ -436,13 +386,6 @@
         
         #anotherBtn {
           font-size: 1.15rem;
-        }
-
-        .providers-list {
-          justify-content: center;
-        }
-        .providers-title {
-          text-align: center;
         }
       }
     </style>
@@ -587,8 +530,6 @@
 
           const ogUrl = document.querySelector('meta[property="og:url"]');
           if (ogUrl) ogUrl.setAttribute("content", window.location.href);
-
-          if (typeof updateLD === "function") updateLD(movie);
         } catch (e) {
           console.warn("updateMeta failed", e);
         }
@@ -667,16 +608,18 @@
             }
           }
 
+          // AQUI ESTÁ LA SOLUCIÓN DEFINITIVA PARA LOS LOGOS: 
+          // Estilos inline forzando Flexbox horizontal (row) y tamaño estricto (42px)
           if (watchProvidersEl) {
             if (movie.watch_providers && movie.watch_providers.length > 0) {
               watchProvidersEl.innerHTML = `
                 <div class="providers-title">Disponible en:</div>
-                <div class="providers-list">
+                <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-start; width: 100%;">
                   ${movie.watch_providers
                     .map(
                       (provider) => `
-                    <div class="provider-logo-wrap">
-                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" title="${escapeHtml(provider.name || "")}">
+                    <div title="${escapeHtml(provider.name || "")}" style="width: 42px; height: 42px; flex: 0 0 42px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.4); background: #fff; margin: 0; padding: 0; display: block;">
+                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; border-radius: 0 !important;">
                     </div>
                   `
                     )

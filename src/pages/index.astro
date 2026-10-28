@@ -109,26 +109,24 @@
         align-items: flex-start; 
       }
 
-      /* LA SOLUCIÓN DEL PÓSTER: Caja totalmente estricta y blindada */
+      /* LA SOLUCIÓN DEL PÓSTER: Altura automática y sin recortes */
       .poster {
-        width: 300px;
-        flex: 0 0 300px; /* Evita que crezca o se encoja */
-        aspect-ratio: 2 / 3; /* Forzamos la proporción real de los pósters */
+        width: 100%;
+        max-width: 300px; /* Límite de ancho */
+        flex: 0 0 auto; /* Permite que tome el espacio que necesite sin forzarse */
         border-radius: 12px;
-        overflow: hidden; /* Esto es clave: nada puede salirse de la caja */
-        background: rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        background: rgba(0, 0, 0, 0.2);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--text-muted);
-        position: relative;
       }
 
       .poster img {
         width: 100%;
-        height: 100%;
-        object-fit: contain; /* Garantiza que la imagen entera sea visible sin recortes */
+        height: auto; /* La altura se calcula automáticamente según las proporciones reales de la imagen */
         display: block;
         transition: transform 0.3s ease;
       }
@@ -343,9 +341,7 @@
         }
         
         .poster {
-          width: 100%;
-          max-width: 280px;
-          flex: auto; /* Permite que el póster se encoja en móviles */
+          max-width: 250px; /* Un poco más pequeño en móviles/tablets */
         }
 
         #title {

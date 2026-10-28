@@ -103,30 +103,29 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
+      /* SOLUCIÓN AL SOLAPAMIENTO: CSS GRID */
       .row {
-        display: flex;
+        display: grid;
+        /* Columna 1 exacta a 350px. Columna 2 se adapta sin superar su espacio */
+        grid-template-columns: 350px minmax(0, 1fr);
         gap: 40px; 
-        align-items: flex-start; 
+        align-items: start; 
+        width: 100%;
       }
 
-      /* EL CONTENEDOR ES AHORA INVISIBLE Y FLUIDO */
       .poster {
-        flex: 0 0 350px; /* Ocupa exactamente 350px en pantallas grandes */
-        width: 350px;
-        max-width: 100%;
-        background: transparent; /* Sin fondos oscuros */
-        padding: 0;
-        margin: 0;
-        border: none;
+        width: 100%;
+        border-radius: 16px; /* Borde en el contenedor... */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        background: rgba(0, 0, 0, 0.2);
+        font-size: 0; /* Evita márgenes blancos ocultos bajo la imagen */
       }
 
-      /* LA IMAGEN DICTA LAS REGLAS */
       .poster img {
-        width: 100%; /* Ocupa todo el ancho de su contenedor (350px) */
-        height: auto; /* La altura se calcula automáticamente según las dimensiones de la foto original */
+        width: 100%;
+        height: auto; /* Mantiene la imagen completa siempre */
         display: block;
-        border-radius: 16px; /* Bordes redondos directamente en la foto */
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Sombra directamente en la foto */
+        border-radius: 16px; /* ...y borde redondeado forzado directamente en la foto */
         transition: transform 0.3s ease;
       }
 
@@ -135,10 +134,9 @@
       }
 
       .meta {
-        flex: 1;
-        min-width: 0;
         display: flex;
         flex-direction: column;
+        width: 100%;
       }
 
       #title {
@@ -334,15 +332,13 @@
 
       @media (max-width: 900px) {
         .row {
-          flex-direction: column;
-          align-items: center;
-          gap: 24px;
+          grid-template-columns: 1fr; /* Pasa a ser 1 sola columna */
+          gap: 32px;
         }
         
         .poster {
-          flex: auto;
-          width: 100%;
-          max-width: 320px;
+          max-width: 350px;
+          margin: 0 auto; /* Lo centra horizontalmente */
         }
 
         #title {
@@ -370,6 +366,10 @@
 
         .card {
           padding: 24px;
+        }
+
+        .poster {
+          max-width: 100%;
         }
 
         .controls {
@@ -614,7 +614,7 @@
                     .map(
                       (provider) => `
                     <div title="${escapeHtml(provider.name || "")}" style="width: 42px; height: 42px; flex: 0 0 42px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.4); background: #fff; margin: 0; padding: 0; display: block;">
-                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; border-radius: 0 !important;">
+                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" style="width: 100% !important; height: 100% !important; object-fit: contain !important; display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; border-radius: 10px !important;">
                     </div>
                   `
                     )

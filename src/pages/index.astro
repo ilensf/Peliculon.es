@@ -91,10 +91,9 @@
         color: var(--text-muted);
       }
 
-      /* TARJETA AMPLIADA */
       .card {
         width: 100%;
-        max-width: 1200px; /* Tarjeta más grande para soportar imágenes inmensas */
+        max-width: 1200px;
         background: var(--card-bg);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
@@ -107,24 +106,27 @@
       .row {
         display: flex;
         gap: 40px; 
-        align-items: flex-start; /* Clave: asegura que la tarjeta crezca hacia abajo junto con la imagen */
+        align-items: flex-start; 
       }
 
-      /* EL CONTENEDOR DEL PÓSTER BLINDADO */
+      /* EL CONTENEDOR ES AHORA INVISIBLE Y FLUIDO */
       .poster {
-        width: 100%;
-        max-width: 400px; /* Tamaño máximo del póster */
-        flex: 0 0 400px;  /* Mantiene siempre este ancho en desktop */
-        border-radius: 12px;
-        overflow: hidden; /* CLAVE: Imposibilita que la imagen se salga de sus límites */
-        /* Al no tener display: flex, se comporta como un bloque natural y obliga a la tarjeta a crecer */
+        flex: 0 0 350px; /* Ocupa exactamente 350px en pantallas grandes */
+        width: 350px;
+        max-width: 100%;
+        background: transparent; /* Sin fondos oscuros */
+        padding: 0;
+        margin: 0;
+        border: none;
       }
 
+      /* LA IMAGEN DICTA LAS REGLAS */
       .poster img {
-        width: 100%;
-        height: auto; /* Crecerá hacia abajo manteniendo el 100% de su proporción sin recortes */
+        width: 100%; /* Ocupa todo el ancho de su contenedor (350px) */
+        height: auto; /* La altura se calcula automáticamente según las dimensiones de la foto original */
         display: block;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+        border-radius: 16px; /* Bordes redondos directamente en la foto */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Sombra directamente en la foto */
         transition: transform 0.3s ease;
       }
 
@@ -338,8 +340,9 @@
         }
         
         .poster {
-          max-width: 320px;
           flex: auto;
+          width: 100%;
+          max-width: 320px;
         }
 
         #title {
@@ -367,10 +370,6 @@
 
         .card {
           padding: 24px;
-        }
-
-        .poster {
-          max-width: 100%;
         }
 
         .controls {

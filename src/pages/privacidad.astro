@@ -1,13 +1,26 @@
----
----
-
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Política de Privacidad - Peliculon.es</title>
+    
+    <!-- Fuentes modernas de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+
     <style>
+      :root {
+        --bg-color: #050510;
+        --card-bg: rgba(15, 23, 42, 0.6);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent-glow: rgba(6, 182, 212, 0.4);
+        --primary-gradient: linear-gradient(135deg, #06b6d4, #3b82f6);
+        --secondary-bg: rgba(51, 65, 85, 0.5);
+      }
+
       * {
         box-sizing: border-box;
         margin: 0;
@@ -15,124 +28,231 @@
       }
 
       body {
-        font-family: system-ui, -apple-system, sans-serif;
-        background-color: #0f172a;
-        color: #e2e8f0;
-        line-height: 1.6;
-        padding: 20px;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-color) 60%);
+        background-attachment: fixed;
+        color: var(--text-main);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        line-height: 1.7;
       }
 
+      /* Contenedor Principal (Glassmorphism) */
       .container {
-        max-width: 800px;
-        margin: 0 auto;
-        background-color: #1e293b;
+        width: 100%;
+        max-width: 800px; /* Un poco más estrecho para facilitar la lectura */
+        background: var(--card-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         padding: 40px;
-        border-radius: 5px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      /* Cabecera y Títulos */
+      .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       h1 {
-        color: #93c5fd;
-        margin-bottom: 20px;
-        font-size: 2rem;
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 12px;
+      }
+
+      .last-updated {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Contenido del Texto */
+      .content {
+        margin-bottom: 40px;
       }
 
       h2 {
-        color: #93c5fd;
-        margin-top: 30px;
-        margin-bottom: 15px;
-        font-size: 1.5rem;
+        font-family: 'Poppins', sans-serif;
+        color: #ffffff;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-top: 32px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      h2::before {
+        content: "";
+        display: block;
+        width: 8px;
+        height: 24px;
+        background: var(--primary-gradient);
+        border-radius: 4px;
       }
 
       p {
-        margin-bottom: 15px;
+        color: #cbd5e1;
+        font-size: 1.05rem;
+        margin-bottom: 16px;
       }
 
       a {
-        color: #93c5fd;
+        color: #38bdf8;
         text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
       }
 
       a:hover {
+        color: #bae6fd;
         text-decoration: underline;
       }
 
-      .back-link {
-        display: inline-block;
-        margin-top: 30px;
-        padding: 10px 20px;
-        background-color: #3b82f6;
-        color: white;
-        border-radius: 5px;
-        text-decoration: none;
+      /* Botón de volver */
+      .controls {
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      .back-link:hover {
-        background-color: #2563eb;
+      .btn-back {
+        font-family: 'Inter', sans-serif;
+        background: var(--secondary-bg);
+        color: var(--text-main);
+        padding: 14px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1.05rem;
         text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-back:hover {
+        background: rgba(71, 85, 105, 0.8);
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+
+      /* --- Responsive --- */
+      @media (max-width: 600px) {
+        body {
+          padding: 20px 12px;
+        }
+
+        .container {
+          padding: 24px;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+
+        h2 {
+          font-size: 1.25rem;
+        }
+
+        p {
+          font-size: 1rem;
+        }
+
+        .btn-back {
+          width: 100%;
+          justify-content: center;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Política de Privacidad</h1>
+      <header class="page-header">
+        <h1>Política de Privacidad</h1>
+        <span class="last-updated">Última actualización: 2025</span>
+      </header>
 
-      <p>Última actualización: 2025</p>
+      <div class="content">
+        <h2>1. Información que Recopilamos</h2>
+        <p>
+          Peliculon.es es un servicio de recomendación de películas que funciona de manera
+          totalmente anónima. No recopilamos ni almacenamos información personal identificable
+          de nuestros usuarios.
+        </p>
 
-      <h2>1. Información que Recopilamos</h2>
-      <p>
-        Peliculon.es es un servicio de recomendación de películas que funciona de manera
-        totalmente anónima. No recopilamos ni almacenamos información personal identificable
-        de nuestros usuarios.
-      </p>
+        <h2>2. Cookies y Tecnologías Similares</h2>
+        <p>
+          Nuestro sitio web puede utilizar cookies técnicas necesarias para el funcionamiento
+          básico del servicio. No utilizamos cookies de seguimiento ni de terceros para fines
+          publicitarios sin su consentimiento.
+        </p>
 
-      <h2>2. Cookies y Tecnologías Similares</h2>
-      <p>
-        Nuestro sitio web puede utilizar cookies técnicas necesarias para el funcionamiento
-        básico del servicio. No utilizamos cookies de seguimiento ni de terceros para fines
-        publicitarios sin su consentimiento.
-      </p>
+        <h2>3. Uso de la Información</h2>
+        <p>
+          La navegación en Peliculon.es se realiza de forma completamente anónima. No compartimos,
+          vendemos ni distribuimos información personal a terceros.
+        </p>
 
-      <h2>3. Uso de la Información</h2>
-      <p>
-        La navegación en Peliculon.es se realiza de forma completamente anónima. No compartimos,
-        vendemos ni distribuimos información personal a terceros.
-      </p>
+        <h2>4. Servicios de Terceros</h2>
+        <p>
+          Utilizamos The Movie Database (TMDB) API para obtener información sobre películas.
+          Las imágenes y datos de películas son propiedad de sus respectivos titulares.
+        </p>
 
-      <h2>4. Servicios de Terceros</h2>
-      <p>
-        Utilizamos The Movie Database (TMDB) API para obtener información sobre películas.
-        Las imágenes y datos de películas son propiedad de sus respectivos titulares.
-      </p>
+        <h2>5. Google AdSense</h2>
+        <p>
+          Este sitio web utiliza Google AdSense para mostrar anuncios. Google puede utilizar
+          cookies para personalizar anuncios basándose en visitas anteriores. Puede obtener más
+          información sobre las cookies de Google y cómo controlarlas en la
+          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">
+            política de privacidad de Google
+          </a>.
+        </p>
 
-      <h2>5. Google AdSense</h2>
-      <p>
-        Este sitio web utiliza Google AdSense para mostrar anuncios. Google puede utilizar
-        cookies para personalizar anuncios basándose en visitas anteriores. Puede obtener más
-        información sobre las cookies de Google y cómo controlarlas en la
-        <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">
-          política de privacidad de Google
-        </a>.
-      </p>
+        <h2>6. Derechos del Usuario</h2>
+        <p>
+          Dado que no recopilamos información personal, no hay datos personales que consultar,
+          modificar o eliminar. Su navegación es completamente anónima.
+        </p>
 
-      <h2>6. Derechos del Usuario</h2>
-      <p>
-        Dado que no recopilamos información personal, no hay datos personales que consultar,
-        modificar o eliminar. Su navegación es completamente anónima.
-      </p>
+        <h2>7. Cambios en esta Política</h2>
+        <p>
+          Nos reservamos el derecho de actualizar esta política de privacidad en cualquier momento.
+          Los cambios serán efectivos inmediatamente después de su publicación en esta página.
+        </p>
 
-      <h2>7. Cambios en esta Política</h2>
-      <p>
-        Nos reservamos el derecho de actualizar esta política de privacidad en cualquier momento.
-        Los cambios serán efectivos inmediatamente después de su publicación en esta página.
-      </p>
+        <h2>8. Contacto</h2>
+        <p>
+          Si tiene alguna pregunta sobre esta política de privacidad, puede contactarnos a través
+          de nuestra <a href="/contacto">página de contacto</a>.
+        </p>
+      </div>
 
-      <h2>8. Contacto</h2>
-      <p>
-        Si tiene alguna pregunta sobre esta política de privacidad, puede contactarnos a través
-        de nuestra <a href="/contacto">página de contacto</a>.
-      </p>
-
-      <a href="/" class="back-link">Volver a Peliculon.es</a>
+      <div class="controls">
+        <a href="/" class="btn-back">← Volver a Peliculon.es</a>
+      </div>
     </div>
   </body>
 </html>

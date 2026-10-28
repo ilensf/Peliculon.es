@@ -1,7 +1,3 @@
----
-
----
-
 <!doctype html>
 <html lang="es">
   <head>
@@ -22,187 +18,313 @@
     <meta property="og:image" content="/assets/og-default.png" />
     <link rel="canonical" href="https://peliculon.es/" />
     <link rel="icon" href="/favicon.webp" type="image/webp" />
+    
+    <!-- Fuentes modernas de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+
     <style>
       :root {
-        font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          "Helvetica Neue",
-          Arial;
+        --bg-color: #050510;
+        --card-bg: rgba(15, 23, 42, 0.6);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --accent-glow: rgba(6, 182, 212, 0.4);
+        --primary-gradient: linear-gradient(135deg, #06b6d4, #3b82f6);
+        --secondary-bg: rgba(51, 65, 85, 0.5);
       }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         min-height: 100vh;
-        background: #0f172a;
-        color: #e6eef8;
+        /* Fondo radial cinematográfico */
+        background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-color) 60%);
+        background-attachment: fixed;
+        color: var(--text-main);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         margin: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        gap: 12px;
-        padding: 24px;
+        padding: 40px 20px;
       }
+
+      /* Tipografía y Cabecera */
+      .site-header {
+        text-align: center;
+        margin-bottom: 24px;
+        width: 100%;
+        max-width: 1000px;
+      }
+
+      .site-title {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        text-shadow: 0 4px 20px var(--accent-glow);
+      }
+
+      .site-subtitle {
+        font-family: 'Poppins', sans-serif;
+        margin: 8px 0 0 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+
+      .promo-text {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 32px auto;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+
+      /* Tarjeta Principal (Glassmorphism) */
       .card {
-        width: min(1000px, 96vw);
-        background: #0b1220;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.03);
+        width: 100%;
+        max-width: 1000px;
+        background: var(--card-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 32px;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
+
       .row {
         display: flex;
-        gap: 20px;
-        align-items: flex-start;
-        flex-wrap: nowrap;
+        gap: 32px;
+        align-items: stretch;
       }
+
+      /* Póster */
       .poster {
-        max-width: 100%;
+        width: 320px;
         flex-shrink: 0;
-        border-radius: 5px;
-        background: #081226;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #cbd5e1;
-        min-height: 520px;
+        color: var(--text-muted);
         overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        position: relative;
       }
-      .site-header {
-        text-align: center;
-        margin-bottom: 8px;
-        width: min(1000px, 96vw);
-      }
-      .site-title {
-        margin: 0;
-        font-size: 3rem;
-        font-weight: 800;
-        letter-spacing: 0.6px;
-        background: linear-gradient(90deg, #c5d2e9, #9bf6e4);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 6px 18px rgba(8, 18, 38, 0.6);
-      }
-      .site-subtitle {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 800;
-        letter-spacing: 0.6px;
-        background: linear-gradient(90deg, #c5d2e9, #9bf6e4);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        text-shadow: 0 6px 18px rgba(8, 18, 38, 0.6);
-      }
-      img {
+
+      .poster img {
         width: 100%;
         height: 100%;
-        display: block;
-        border-radius: 5px;
         object-fit: cover;
-        background: #081226;
+        display: block;
+        transition: transform 0.3s ease;
       }
+
+      .card:hover .poster img {
+        transform: scale(1.03);
+      }
+
+      /* Metadatos y Textos */
       .meta {
         flex: 1;
         min-width: 0;
-        padding: 8px 12px;
         display: flex;
         flex-direction: column;
       }
+
       #title {
-        margin: 0 0 8px 0;
-        font-size: 1.6rem;
-        line-height: 1.1;
+        font-family: 'Poppins', sans-serif;
+        margin: 0 0 12px 0;
+        font-size: 2.2rem;
+        font-weight: 800;
+        line-height: 1.2;
+        color: #ffffff;
       }
+
+      /* Badges para nota y año */
       #sub {
-        color: #9fb4ff;
-        margin-bottom: 8px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
       }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .badge.star {
+        background: rgba(234, 179, 8, 0.15);
+        color: #fde047;
+        border-color: rgba(234, 179, 8, 0.3);
+      }
+
+      .synopsis-intro {
+        font-size: 1rem;
+        color: #38bdf8;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
       #overview {
-        max-height: 320px;
-        overflow: auto;
-        white-space: normal;
+        max-height: 250px;
+        overflow-y: auto;
         color: #cbd5e1;
+        line-height: 1.6;
+        font-size: 1.05rem;
+        margin-bottom: 20px;
+        padding-right: 10px;
+      }
+
+      /* Scrollbar personalizada para el overview */
+      #overview::-webkit-scrollbar {
+        width: 6px;
+      }
+      #overview::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+      }
+      #overview::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+      }
+
+      /* Reseñas */
+      .review {
+        margin-top: 12px;
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-left: 4px solid #3b82f6;
+        border-radius: 8px;
+        color: #e2e8f0;
+      }
+
+      .review .review-content {
+        font-size: 0.95rem;
         line-height: 1.5;
+        font-style: italic;
+      }
+
+      .review .review-author {
+        margin-top: 10px;
+        color: #38bdf8;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-align: right;
+      }
+
+      /* Proveedores */
+      #watchProviders {
+        margin: 24px 0;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .providers-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
         margin-bottom: 12px;
       }
-      .review {
-        margin-top: 8px;
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.02);
-        border-left: 3px solid rgba(99, 102, 241, 0.12);
-        border-radius: 5px;
-        color: #dbeafe;
-        font-style: normal;
+
+      .providers-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
       }
-      .review .review-author {
-        margin-top: 8px;
-        color: #93c5fd;
-        font-weight: 700;
-        font-size: 0.95rem;
+
+      .provider-logo-wrap {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease;
       }
-      .review .review-content {
-        color: #cbd5e1;
-        font-size: 0.95rem;
-        line-height: 1.4;
+
+      .provider-logo-wrap:hover {
+        transform: translateY(-3px);
       }
+
+      /* Controles y Botones */
       .controls {
         display: flex;
-        gap: 5rem;
-        margin-top: 50%;
-        justify-content: center;
-        width: 100%;
+        gap: 16px;
+        margin-top: auto;
+        padding-top: 20px;
       }
+
       button {
-        background: #0e95e2;
+        font-family: 'Inter', sans-serif;
         border: none;
-        padding: 10px 14px;
-        border-radius: 5px;
-        color: #dddddd;
-        font-weight: 700;
+        border-radius: 10px;
+        font-weight: 600;
         cursor: pointer;
-      }
-      button.secondary {
-        background: #334155;
-        color: #e6eef8;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
       #anotherBtn {
-        padding: 12px 20px;
-        font-size: 1.05rem;
-        background: linear-gradient(90deg, #06b6d4, #06d6a0);
-        color: #042f2e;
-        box-shadow: 0 8px 28px rgba(6, 182, 167, 0.18);
-        border-radius: 5px;
-        transition:
-          transform 0.12s ease,
-          filter 0.12s ease,
-          box-shadow 0.12s ease;
+        padding: 14px 28px;
+        font-size: 1.1rem;
+        background: var(--primary-gradient);
+        color: #ffffff;
+        box-shadow: 0 4px 15px var(--accent-glow);
+        flex: 1;
       }
-      #anotherBtn:hover {
-        transform: translateY(-3px);
-        filter: brightness(1.03);
-        box-shadow: 0 12px 34px rgba(6, 182, 167, 0.22);
+
+      #anotherBtn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px var(--accent-glow);
+        filter: brightness(1.1);
       }
-      #anotherBtn:focus {
-        outline: 3px solid rgba(99, 102, 241, 0.18);
-        outline-offset: 2px;
-      }
+
       button.secondary {
-        padding: 10px 12px;
-        font-size: 0.95rem;
+        background: var(--secondary-bg);
+        color: var(--text-main);
+        padding: 12px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
+
+      button.secondary:hover:not(:disabled) {
+        background: rgba(71, 85, 105, 0.8);
+      }
+
       button:disabled {
         opacity: 0.5;
         cursor: not-allowed;
+        transform: none !important;
+        box-shadow: none !important;
       }
-      .small {
-        font-size: 0.95rem;
-        color: #93c5fd;
-      }
+
+      /* Utilidades */
       .sr-only {
         position: absolute;
         width: 1px;
@@ -210,168 +332,95 @@
         padding: 0;
         margin: -1px;
         overflow: hidden;
-        clip: rect(0, 0, 0, 0);
+        clip: rect(0,0,0,0);
         white-space: nowrap;
         border: 0;
       }
-      .review + #showEngBtn:not([hidden]) {
-        margin-top: 16px;
-        display: inline-block;
-      }
 
-      @media (max-width: 1100px) {
-        .row {
-          flex-wrap: wrap;
-        }
-        .poster {
-          order: 1;
-          width: 100%;
-          min-height: 300px;
-        }
-        .meta {
-          order: 2;
-          width: 100%;
-        }
-        .controls {
-          margin-top: 24px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        body {
-          padding: 8px;
-          gap: 6px;
-        }
-        .site-title {
-          font-size: 1.5rem;
-          margin-bottom: 4px;
-        }
-        .site-subtitle {
-          font-size: 0.75rem;
-        }
-        .card {
-          padding: 12px;
-        }
-        .poster {
-          min-height: auto;
-        }
-        .poster img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        #title {
-          font-size: 1rem;
-          margin-bottom: 4px;
-        }
-        .small {
-          font-size: 0.8rem;
-        }
-        #overview {
-          font-size: 0.85rem;
-          max-height: 100px;
-          overflow: auto;
-          line-height: 1.3;
-          margin-bottom: 6px;
-        }
-        #watchProviders {
-          margin-top: 6px;
-          margin-bottom: 6px;
-        }
-        .providers-title {
-          font-size: 0.75rem;
-          margin-bottom: 4px;
-        }
-        .provider-logo-wrap {
-          width: 40px;
-          height: 40px;
-        }
-        img.provider-logo {
-          width: 40px !important;
-          height: 40px !important;
-        }
-        .review {
-          font-size: 0.8rem;
-          padding: 6px;
-          margin-top: 4px;
-        }
-        button {
-          padding: 6px 8px;
-          font-size: 0.85rem;
-        }
-        #anotherBtn {
-          padding: 8px 12px;
-          font-size: 0.9rem;
-        }
-        .controls {
-          gap: 0.5rem;
-          margin-top: 8px;
-        }
-      }
-
-      #watchProviders {
-        margin-top: 16px;
-        margin-bottom: 12px;
-      }
-      .providers-title {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #93c5fd;
-        margin-bottom: 10px;
-      }
-      .providers-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-      }
-      .providers-list img {
-        border-radius: 5px !important;
-      }
-      .provider-logo-wrap {
-        width: 60px;
-        height: 60px;
-      }
-      img.provider-logo {
-        width: 60px !important;
-        height: 60px !important;
-        border-radius: 5px !important;
-        object-fit: cover !important;
-        display: block;
-      }
-
-      .promo-text {
-        text-align: center;
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        font-size: 1rem;
-        line-height: 1.6;
-        color: #93c5fd;
-      }
-
-      .synopsis-intro {
+      .small {
         font-size: 0.95rem;
-        color: #93c5fd;
-        margin-bottom: 8px;
-        font-weight: 600;
+        color: var(--text-muted);
       }
 
       footer {
         text-align: center;
-        padding: 20px;
-        margin-top: 40px;
-        border-top: 1px solid #334155;
+        padding: 32px 20px;
+        margin-top: auto;
+        color: var(--text-muted);
       }
 
       footer a {
-        color: #93c5fd;
+        color: #38bdf8;
         text-decoration: none;
         margin: 0 15px;
+        font-size: 0.95rem;
+        transition: color 0.2s;
       }
 
       footer a:hover {
+        color: #bae6fd;
         text-decoration: underline;
+      }
+
+      /* --- Responsive --- */
+      @media (max-width: 900px) {
+        .row {
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+        }
+        
+        .poster {
+          width: 100%;
+          max-width: 320px;
+        }
+
+        #title {
+          text-align: center;
+          font-size: 1.8rem;
+        }
+
+        #sub {
+          justify-content: center;
+        }
+
+        #overview {
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 20px 12px;
+        }
+
+        .site-title {
+          font-size: 2.5rem;
+        }
+
+        .card {
+          padding: 20px;
+        }
+
+        .controls {
+          flex-direction: column-reverse;
+        }
+
+        button {
+          width: 100%;
+          padding: 16px;
+        }
+        
+        #anotherBtn {
+          font-size: 1.15rem;
+        }
+
+        .providers-list {
+          justify-content: center;
+        }
+        .providers-title {
+          text-align: center;
+        }
       }
     </style>
     <meta name="google-adsense-account" content="ca-pub-5799986250497785" />
@@ -379,7 +428,6 @@
   <body>
     <header class="site-header">
       <a class="skip-link sr-only" href="#main">Saltar al contenido</a>
-
       <h1 class="site-title">Peliculon.es</h1>
       <h2 class="site-subtitle">¿No sabes qué película ver?</h2>
     </header>
@@ -391,40 +439,55 @@
     <main id="main" class="card">
       <div class="row">
         <div class="poster" id="poster">Cargando...</div>
+        
         <div class="meta">
           <h2 id="title">Cargando...</h2>
-          <div class="small" id="sub">—</div>
-          <div class="synopsis-intro" id="synopsisIntro" hidden>Aquí te dejamos la sinopsis de este peliculón:</div>
+          
+          <div id="sub">
+            <!-- Badges generados por JS -->
+          </div>
+          
+          <div class="synopsis-intro" id="synopsisIntro" hidden>De qué trata este peliculón:</div>
           <div id="overview">
-            Haz clic en <strong>Otra pelicula</strong> para obtener una sugerencia
-            de película.
+            Haz clic en <strong>Otra película</strong> para obtener una sugerencia perfecta para hoy.
           </div>
 
           <div id="watchProviders" hidden></div>
 
-          <button
-            id="showReviewBtn"
-            class="secondary"
-            hidden
-            aria-controls="review"
-            aria-expanded="false">Mostrar reseña</button
-          >
+          <div>
+            <button
+              id="showReviewBtn"
+              class="secondary"
+              hidden
+              aria-controls="review"
+              aria-expanded="false"
+              style="margin-bottom: 10px; width: auto; padding: 8px 16px; font-size: 0.85rem;"
+            >
+              Mostrar reseña
+            </button>
+          </div>
 
           <div id="review" class="review" hidden></div>
-          <button
-            id="showEngBtn"
-            class="secondary"
-            hidden
-            aria-controls="engReviews"
-            aria-expanded="false">Ver reseñas en Inglés</button
-          >
+
+          <div>
+            <button
+              id="showEngBtn"
+              class="secondary"
+              hidden
+              aria-controls="engReviews"
+              aria-expanded="false"
+              style="margin-top: 10px; width: auto; padding: 8px 16px; font-size: 0.85rem;"
+            >
+              Ver reseñas en Inglés
+            </button>
+          </div>
 
           <div id="engReviews" class="review" hidden></div>
           <div id="status" class="sr-only" aria-live="polite"></div>
 
           <div class="controls">
             <button id="prevBtn" class="secondary" disabled>Anterior</button>
-            <button id="anotherBtn">Otra película</button>
+            <button id="anotherBtn">🎬 Otra película</button>
           </div>
         </div>
       </div>
@@ -433,7 +496,7 @@
     <footer>
       <a href="/privacidad">Política de Privacidad</a>
       <a href="/contacto">Contacto</a>
-      <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.7;">Datos proporcionados por TMDB</div>
+      <div style="font-size: 0.75rem; margin-top: 15px; opacity: 0.5;">Datos proporcionados por TMDB</div>
     </footer>
 
     <script type="module">
@@ -512,7 +575,6 @@
       function render(movie) {
         try {
           if (!movie) return;
-          console.debug("[render] movie:", movie);
           updateMeta(movie);
           const formattedDate = movie.release_date
             ? formatDate(movie.release_date)
@@ -526,29 +588,33 @@
           if (overviewEl) overviewEl.textContent = overviewText;
           if (synopsisIntroEl && movie.overview) synopsisIntroEl.hidden = false;
 
+          // MODIFICADO: Generación de Badges para mejorar el diseño
           subEl.innerHTML = [
             formattedDate
-              ? `<time datetime="${movie.release_date}">${formattedDate}</time>`
+              ? `<span class="badge">📅 <time datetime="${movie.release_date}">${formattedDate}</time></span>`
               : null,
-            movie.vote_average ? `⭐ ${movie.vote_average}` : null,
-          ]
-            .filter(Boolean)
-            .join(" • ");
+            movie.vote_average 
+              ? `<span class="badge star">⭐ ${movie.vote_average.toFixed(1)}</span>` 
+              : null,
+          ].filter(Boolean).join("");
+
           if (movie.poster_path) {
             posterEl.innerHTML = `<img src="${movie.poster_path}" alt="Póster de ${escapeHtml(movie.title)}">`;
           } else {
-            posterEl.textContent = "Sin póster";
+            posterEl.innerHTML = "<span style='color: #475569;'>Sin póster</span>";
           }
+
           if (movie.review_content) {
             showReviewBtn.hidden = false;
             showEngBtn.hidden = true;
             engReviews.hidden = true;
             engReviews.innerHTML = "";
             reviewEl.hidden = true;
+            showReviewBtn.textContent = "Mostrar reseña";
             const author = movie.review_author
               ? `— ${escapeHtml(movie.review_author)}`
               : "";
-            reviewEl.innerHTML = `<div class="review-content">${escapeHtml(movie.review_content)}</div>${author ? `<div class="review-author">${author}</div>` : ""}`;
+            reviewEl.innerHTML = `<div class="review-content">"${escapeHtml(movie.review_content)}"</div>${author ? `<div class="review-author">${author}</div>` : ""}`;
             if (statusEl)
               statusEl.textContent = `Sugerencia: ${movie.title || "película"}`;
             try {
@@ -562,13 +628,14 @@
             if (movie.english_reviews && movie.english_reviews.length) {
               showEngBtn.hidden = false;
               engReviews.hidden = true;
+              showEngBtn.textContent = "Ver reseñas en Inglés";
               engReviews.innerHTML = movie.english_reviews
                 .map(
                   (r) =>
-                    `<div class="review-content">${escapeHtml(r.content || "")}</div>${r.author ? `<div class="review-author">— ${escapeHtml(r.author)}</div>` : ""}`
+                    `<div class="review-content">"${escapeHtml(r.content || "")}"</div>${r.author ? `<div class="review-author">— ${escapeHtml(r.author)}</div>` : ""}`
                 )
                 .join(
-                  '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:8px 0">'
+                  '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.04);margin:16px 0">'
                 );
               if (statusEl)
                 statusEl.textContent = `No se encontraron reseñas en Español. ${movie.english_reviews.length} reseña(s) en Inglés disponible(s).`;
@@ -587,10 +654,8 @@
                   ${movie.watch_providers
                     .map(
                       (provider) => `
-                    <div class="provider-logo-wrap" style="border-radius: 5px; overflow: hidden; display: inline-block;">
-                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(
-                        provider.name || ""
-                      )}" class="provider-logo" title="${escapeHtml(provider.name || "")}" style="border-radius: 5px; width: 100%; height: 100%; object-fit: cover;">
+                    <div class="provider-logo-wrap">
+                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" title="${escapeHtml(provider.name || "")}" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                   `
                     )
@@ -641,7 +706,7 @@
 
       async function fetchRandom() {
         anotherBtn.disabled = true;
-        anotherBtn.textContent = "Cargando...";
+        anotherBtn.innerHTML = "⏳ Buscando...";
         if (statusEl) statusEl.textContent = "Cargando sugerencia...";
         try {
           const res = await fetch("/api/random");
@@ -653,24 +718,26 @@
           index = history.length - 1;
           render(movie);
         } catch (err) {
-          titleEl.textContent = "Error";
+          titleEl.textContent = "¡Ups! Ha ocurrido un error";
           overviewEl.textContent =
-            err.message || "Error al obtener la película.";
-          posterEl.textContent = "—";
+            err.message || "Error al obtener la película. Inténtalo de nuevo.";
+          posterEl.innerHTML = "<span style='color: #475569;'>Sin póster</span>";
         } finally {
           anotherBtn.disabled = false;
-          anotherBtn.textContent = "Otra película";
+          anotherBtn.innerHTML = "🎬 Otra película";
         }
       }
+
       prevBtn.addEventListener("click", () => {
         if (index > 0) {
           index -= 1;
           render(history[index]);
         }
       });
+
       anotherBtn.addEventListener("click", fetchRandom);
+
       showReviewBtn.addEventListener("click", () => {
-        const expanded = showReviewBtn.getAttribute("aria-expanded") === "true";
         if (reviewEl.hidden) {
           reviewEl.hidden = false;
           showReviewBtn.textContent = "Ocultar reseña";
@@ -681,8 +748,8 @@
           showReviewBtn.setAttribute("aria-expanded", "false");
         }
       });
+
       showEngBtn.addEventListener("click", () => {
-        const expanded = showEngBtn.getAttribute("aria-expanded") === "true";
         if (engReviews.hidden) {
           engReviews.hidden = false;
           showEngBtn.textContent = "Ocultar reseñas en Inglés";
@@ -694,6 +761,7 @@
         }
       });
 
+      // Inicializar la primera búsqueda
       fetchRandom();
     </script>
   </body>

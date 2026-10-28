@@ -109,14 +109,17 @@
         align-items: flex-start; 
       }
 
-      /* Póster con límites de tamaño y sin recortes */
+      /* LA SOLUCIÓN DEL PÓSTER: Caja totalmente estricta y blindada */
       .poster {
-        width: 100%;
-        max-width: 300px; /* Límite máximo de ancho */
-        flex-shrink: 0;
-        background: transparent;
+        width: 300px;
+        flex: 0 0 300px; /* Evita que crezca o se encoja */
+        aspect-ratio: 2 / 3; /* Forzamos la proporción real de los pósters */
+        border-radius: 12px;
+        overflow: hidden; /* Esto es clave: nada puede salirse de la caja */
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         justify-content: center;
         color: var(--text-muted);
         position: relative;
@@ -124,12 +127,9 @@
 
       .poster img {
         width: 100%;
-        height: auto;
-        max-height: 450px; /* Límite máximo de alto para no ocupar toda la pantalla */
-        object-fit: contain; /* Garantiza que la imagen nunca se recorte */
+        height: 100%;
+        object-fit: contain; /* Garantiza que la imagen entera sea visible sin recortes */
         display: block;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         transition: transform 0.3s ease;
       }
 
@@ -343,11 +343,9 @@
         }
         
         .poster {
+          width: 100%;
           max-width: 280px;
-        }
-
-        .poster img {
-          max-height: 400px;
+          flex: auto; /* Permite que el póster se encoja en móviles */
         }
 
         #title {

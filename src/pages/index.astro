@@ -56,7 +56,7 @@
         text-align: center;
         margin-bottom: 24px;
         width: 100%;
-        max-width: 1000px;
+        max-width: 1150px;
       }
 
       .site-title {
@@ -93,11 +93,11 @@
 
       .card {
         width: 100%;
-        max-width: 1000px;
+        max-width: 1150px; /* Contenedor ensanchado */
         background: var(--card-bg);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        padding: 32px;
+        padding: 40px;
         border-radius: 20px;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -105,34 +105,34 @@
 
       .row {
         display: flex;
-        gap: 32px;
+        gap: 40px; /* Mayor separación al tener más espacio */
         align-items: flex-start; 
       }
 
-      /* LA SOLUCIÓN DEL PÓSTER: Altura automática y sin recortes */
+      /* EL PÓSTER: Contenedor flexible, estilos directo a la imagen */
       .poster {
         width: 100%;
-        max-width: 300px; /* Límite de ancho */
-        flex: 0 0 auto; /* Permite que tome el espacio que necesite sin forzarse */
-        border-radius: 12px;
-        overflow: hidden;
-        background: rgba(0, 0, 0, 0.2);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        max-width: 380px; /* Póster más grande */
+        flex: 0 0 auto;
+        position: relative;
         display: flex;
-        align-items: center;
         justify-content: center;
-        color: var(--text-muted);
+        /* Sin fondos ni sombras en el contenedor para evitar los recortes y bordes grises */
       }
 
       .poster img {
         width: 100%;
-        height: auto; /* La altura se calcula automáticamente según las proporciones reales de la imagen */
+        height: auto; /* Adapta su altura a su proporción real */
+        max-height: 600px; /* Límite para que no ocupe 2 pantallas de alto */
+        object-fit: contain; /* Garantiza que la imagen se vea 100% entera siempre */
+        border-radius: 12px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6); /* La sombra abraza la imagen, no al contenedor */
         display: block;
         transition: transform 0.3s ease;
       }
 
       .card:hover .poster img {
-        transform: scale(1.03);
+        transform: scale(1.02);
       }
 
       .meta {
@@ -145,7 +145,7 @@
       #title {
         font-family: 'Poppins', sans-serif;
         margin: 0 0 12px 0;
-        font-size: 2.2rem;
+        font-size: 2.5rem;
         font-weight: 800;
         line-height: 1.2;
         color: #ffffff;
@@ -184,13 +184,13 @@
       }
 
       #overview {
-        max-height: 250px;
+        max-height: 300px; /* Más espacio para leer la sinopsis */
         overflow-y: auto;
         color: #e2e8f0;
-        line-height: 1.6;
-        font-size: 1.05rem;
+        line-height: 1.7;
+        font-size: 1.1rem;
         margin-bottom: 20px;
-        padding-right: 10px;
+        padding-right: 15px;
       }
 
       #overview::-webkit-scrollbar {
@@ -341,12 +341,13 @@
         }
         
         .poster {
-          max-width: 250px; /* Un poco más pequeño en móviles/tablets */
+          max-width: 300px;
+          flex: auto;
         }
 
         #title {
           text-align: center;
-          font-size: 1.8rem;
+          font-size: 2rem;
         }
 
         #sub {
@@ -368,7 +369,7 @@
         }
 
         .card {
-          padding: 20px;
+          padding: 24px;
         }
 
         .controls {

@@ -16,9 +16,9 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/assets/og-default.png" />
+    <link rel="canonical" href="https://peliculon.es/" />
     <link rel="icon" href="/favicon.webp" type="image/webp" />
     
-    <!-- Fuentes modernas de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
@@ -40,7 +40,6 @@
 
       body {
         min-height: 100vh;
-        /* Fondo radial cinematográfico */
         background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-color) 60%);
         background-attachment: fixed;
         color: var(--text-main);
@@ -53,7 +52,6 @@
         padding: 40px 20px;
       }
 
-      /* Tipografía y Cabecera */
       .site-header {
         text-align: center;
         margin-bottom: 24px;
@@ -93,7 +91,6 @@
         color: var(--text-muted);
       }
 
-      /* Tarjeta Principal (Glassmorphism) */
       .card {
         width: 100%;
         max-width: 1000px;
@@ -106,16 +103,18 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
+      /* Contenedor principal corregido */
       .row {
         display: flex;
         gap: 32px;
-        align-items: stretch;
+        align-items: flex-start; 
       }
 
-      /* Póster */
+      /* Póster bloqueado con proporción 2:3 */
       .poster {
         width: 320px;
         flex-shrink: 0;
+        aspect-ratio: 2 / 3;
         border-radius: 12px;
         background: rgba(0, 0, 0, 0.3);
         display: flex;
@@ -139,7 +138,6 @@
         transform: scale(1.03);
       }
 
-      /* Metadatos y Textos */
       .meta {
         flex: 1;
         min-width: 0;
@@ -156,7 +154,6 @@
         color: #ffffff;
       }
 
-      /* Badges para nota y año */
       #sub {
         display: flex;
         gap: 12px;
@@ -198,7 +195,6 @@
         padding-right: 10px;
       }
 
-      /* Scrollbar personalizada para el overview */
       #overview::-webkit-scrollbar {
         width: 6px;
       }
@@ -211,7 +207,6 @@
         border-radius: 10px;
       }
 
-      /* Reseñas */
       .review {
         margin-top: 12px;
         padding: 16px;
@@ -235,10 +230,10 @@
         text-align: right;
       }
 
-      /* Proveedores */
-     #watchProviders {
-        margin: 20px 0;
-        padding-top: 16px;
+      /* Proveedores con tamaños blindados */
+      #watchProviders {
+        margin: 24px 0;
+        padding-top: 20px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
@@ -248,29 +243,38 @@
         color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
       }
 
       .providers-list {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 12px;
+        align-items: flex-start;
       }
 
       .provider-logo-wrap {
-        width: 34px; /* Tamaño reducido de 48px a 34px */
-        height: 34px;
-        border-radius: 8px; /* Borde ajustado a la nueva proporción */
+        width: 36px !important;
+        height: 36px !important;
+        flex: 0 0 36px !important;
+        border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease;
+        display: block;
+      }
+
+      .provider-logo-wrap img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block;
       }
 
       .provider-logo-wrap:hover {
         transform: translateY(-2px);
       }
 
-      /* Controles y Botones */
       .controls {
         display: flex;
         gap: 16px;
@@ -323,7 +327,6 @@
         box-shadow: none !important;
       }
 
-      /* Utilidades */
       .sr-only {
         position: absolute;
         width: 1px;
@@ -361,7 +364,6 @@
         text-decoration: underline;
       }
 
-      /* --- Responsive --- */
       @media (max-width: 900px) {
         .row {
           flex-direction: column;
@@ -443,7 +445,6 @@
           <h2 id="title">Cargando...</h2>
           
           <div id="sub">
-            <!-- Badges generados por JS -->
           </div>
           
           <div class="synopsis-intro" id="synopsisIntro" hidden>De qué trata este peliculón:</div>
@@ -587,7 +588,6 @@
           if (overviewEl) overviewEl.textContent = overviewText;
           if (synopsisIntroEl && movie.overview) synopsisIntroEl.hidden = false;
 
-          // MODIFICADO: Generación de Badges para mejorar el diseño
           subEl.innerHTML = [
             formattedDate
               ? `<span class="badge">📅 <time datetime="${movie.release_date}">${formattedDate}</time></span>`
@@ -654,7 +654,7 @@
                     .map(
                       (provider) => `
                     <div class="provider-logo-wrap">
-                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" title="${escapeHtml(provider.name || "")}" style="width: 100%; height: 100%; object-fit: cover;">
+                      <img src="${escapeHtml(provider.logo || "")}" alt="${escapeHtml(provider.name || "")}" title="${escapeHtml(provider.name || "")}">
                     </div>
                   `
                     )
@@ -760,7 +760,6 @@
         }
       });
 
-      // Inicializar la primera búsqueda
       fetchRandom();
     </script>
   </body>

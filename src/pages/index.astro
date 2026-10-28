@@ -103,40 +103,52 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      /* SOLUCIÓN AL SOLAPAMIENTO: CSS GRID */
+      /* BLINDAJE CONTRA SOLAPAMIENTO */
       .row {
-        display: grid;
-        /* Columna 1 exacta a 350px. Columna 2 se adapta sin superar su espacio */
-        grid-template-columns: 350px minmax(0, 1fr);
-        gap: 40px; 
-        align-items: start; 
-        width: 100%;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 50px !important; /* Gran separación para empujar el texto a la derecha */
+        align-items: flex-start !important; 
+        width: 100% !important;
       }
 
+      /* EL CONTENEDOR ES INAMOVIBLE */
       .poster {
-        width: 100%;
-        border-radius: 16px; /* Borde en el contenedor... */
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-        background: rgba(0, 0, 0, 0.2);
-        font-size: 0; /* Evita márgenes blancos ocultos bajo la imagen */
+        width: 350px !important;
+        min-width: 350px !important;
+        max-width: 350px !important;
+        flex: 0 0 350px !important; /* Obliga a mantener exactamente este ancho */
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+        display: block !important;
       }
 
+      /* LA IMAGEN JAMÁS SUPERARÁ LOS 350px */
       .poster img {
-        width: 100%;
-        height: auto; /* Mantiene la imagen completa siempre */
-        display: block;
-        border-radius: 16px; /* ...y borde redondeado forzado directamente en la foto */
-        transition: transform 0.3s ease;
+        width: 350px !important;
+        max-width: 350px !important;
+        height: auto !important; /* Altura natural completa sin recortes */
+        display: block !important;
+        border-radius: 16px !important; /* Bordes redondos de la imagen */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+        transition: transform 0.3s ease !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
 
       .card:hover .poster img {
-        transform: scale(1.02);
+        transform: scale(1.02) !important;
       }
 
+      /* EL TEXTO SE QUEDA A LA DERECHA Y SE ADAPTA AL RESTO */
       .meta {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
+        flex: 1 !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
       }
 
       #title {
@@ -181,7 +193,7 @@
       }
 
       #overview {
-        max-height: 350px;
+        max-height: 400px;
         overflow-y: auto;
         color: #e2e8f0;
         line-height: 1.7;
@@ -332,13 +344,22 @@
 
       @media (max-width: 900px) {
         .row {
-          grid-template-columns: 1fr; /* Pasa a ser 1 sola columna */
-          gap: 32px;
+          flex-direction: column !important;
+          align-items: center !important;
+          gap: 32px !important;
         }
         
         .poster {
-          max-width: 350px;
-          margin: 0 auto; /* Lo centra horizontalmente */
+          width: 300px !important;
+          min-width: 300px !important;
+          max-width: 300px !important;
+          flex: 0 0 300px !important;
+          margin: 0 auto !important;
+        }
+
+        .poster img {
+          width: 300px !important;
+          max-width: 300px !important;
         }
 
         #title {
@@ -366,10 +387,6 @@
 
         .card {
           padding: 24px;
-        }
-
-        .poster {
-          max-width: 100%;
         }
 
         .controls {

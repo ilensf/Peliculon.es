@@ -1,16 +1,26 @@
 {
-  "name": "",
+  "name": "peliculon-es",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
+    "test": "tsx --test src/pages/api/random.test.ts",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/netlify": "^6.6.1",
     "@astrojs/vercel": "^11.0.16",
     "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3"
   }
 }
